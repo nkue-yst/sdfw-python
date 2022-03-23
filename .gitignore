@@ -1,0 +1,4 @@
+.idea/
+dist/
+*.egg-info/
+sdfw/__pycache__/
