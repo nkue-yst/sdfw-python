@@ -19,6 +19,8 @@ class Messenger(threading.Thread):
 
     Attributes
     ----------
+    _instance : Messenger
+        シングルトン用インスタンス
     ip_address : str
         IPアドレス（ローカルホスト）
     command_port : int
@@ -32,10 +34,17 @@ class Messenger(threading.Thread):
     event_sock : socket
         イベント情報受信用ソケット
     """
+    _instance = None
+
+    @classmethod
+    def get_instance(cls):
+        if cls._instance is None:
+            cls._instance = cls()
+        return cls._instance
 
     def __init__(self):
         """
-        ソケット通信を開始する
+        ソケット通信用のパラメータ設定を行い、通信を確立する
         """
         super().__init__()
         print('Messenger is initialized')
@@ -53,11 +62,34 @@ class Messenger(threading.Thread):
 
     def run(self):
         """
-        イベント情報受信スレッドでの実行処理
+        スレッドにてイベント情報受信処理を行う
         """
         i = 0
-        while True:
+        while i < 5:
             print('Messenger is running.: ', end='')
             print(i)
             i += 1
             time.sleep(1)
+
+    def send_message(self, message):
+        """
+        作成したメッセージを送信する
+
+        Parameters
+        ----------
+        message : str
+            送信するメッセージ本体
+        """
+        # 同期用データを受信
+        self.command_sock.recv(1)
+
+        # 終端文字を付けたコマンド実行メッセージを送信
+        self.command_sock.send((message + '\0').encode())
+
+    def exec_quit(self):
+        """
+        終了処理を実行する
+        """
+        # 終了用メッセージを作成・送信
+        message = 'quit'
+        self.send_message(message)

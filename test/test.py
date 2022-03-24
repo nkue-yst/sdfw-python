@@ -16,6 +16,7 @@ def main():
     sdfwを利用したテストプログラムのメイン処理関数
     """
     sdfw.sdfw.sdfw_init()
+    sdfw.sdfw.sdfw_quit()
 
 
 if __name__ == '__main__':

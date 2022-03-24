@@ -5,3 +5,7 @@ __author__ = 'Nakaue Yoshito'
 __date__ = '2022/03/24'
 
 from sdfw import sdfw
+
+
+class Messenger:
+    pass
