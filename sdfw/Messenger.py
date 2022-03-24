@@ -21,23 +21,31 @@ class Messenger(threading.Thread):
     ----------
     _instance : Messenger
         シングルトン用インスタンス
-    ip_address : str
+    _ip_address : str
         IPアドレス（ローカルホスト）
-    command_port : int
+    _command_port : int
         コマンド送信用ポート番号
-    event_port : int
+    _event_port : int
         イベント情報受信用ポート番号
-    buffer_size : int
+    _buffer_size : int
         送受信バッファサイズ
-    command_sock : socket
+    _command_sock : socket
         コマンド送信用ソケット
-    event_sock : socket
+    _event_sock : socket
         イベント情報受信用ソケット
     """
     _instance = None
 
     @classmethod
     def get_instance(cls):
+        """
+        シングルトンのインスタンスを取得する
+
+        Returns
+        -------
+        _instance : Messenger
+            シングルトン用インスタンス
+        """
         if cls._instance is None:
             cls._instance = cls()
         return cls._instance
@@ -47,31 +55,28 @@ class Messenger(threading.Thread):
         ソケット通信用のパラメータ設定を行い、通信を確立する
         """
         super().__init__()
-        print('Messenger is initialized')
 
-        self.ip_address = '127.0.0.1'
-        self.command_port = 62491
-        self.event_port = 62492
-        self.buffer_size = 512
+        self._is_loop = True
 
-        self.command_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.command_sock.connect((self.ip_address, self.command_port))
+        self._ip_address = '127.0.0.1'
+        self._command_port = 62491
+        self._event_port = 62492
+        self._buffer_size = 512
 
-        self.event_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.event_sock.connect((self.ip_address, self.event_port))
+        self._command_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._command_sock.connect((self._ip_address, self._command_port))
+
+        self._event_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._event_sock.connect((self._ip_address, self._event_port))
 
     def run(self):
         """
         スレッドにてイベント情報受信処理を行う
         """
-        i = 0
-        while i < 5:
-            print('Messenger is running.: ', end='')
-            print(i)
-            i += 1
-            time.sleep(1)
+        while self._is_loop:
+            pass
 
-    def send_message(self, message):
+    def _send_message(self, message):
         """
         作成したメッセージを送信する
 
@@ -81,10 +86,25 @@ class Messenger(threading.Thread):
             送信するメッセージ本体
         """
         # 同期用データを受信
-        self.command_sock.recv(1)
+        self._command_sock.recv(1)
 
         # 終端文字を付けたコマンド実行メッセージを送信
-        self.command_sock.send((message + '\0').encode())
+        self._command_sock.send((message + '\0').encode())
+
+    def exec_open_window(self, width, height):
+        """
+        新規ウィンドウを開く
+
+        Parameters
+        ----------
+        width : int
+            ウィンドウの横幅
+        height : int
+            ウィンドウの高さ
+        """
+        # ウィンドウ作成用メッセージを作成・送信
+        message = 'openWindow/' + str(width) + '/' + str(height)
+        self._send_message(message)
 
     def exec_quit(self):
         """
@@ -92,4 +112,5 @@ class Messenger(threading.Thread):
         """
         # 終了用メッセージを作成・送信
         message = 'quit'
-        self.send_message(message)
+        self._send_message(message)
+        self._is_loop = False

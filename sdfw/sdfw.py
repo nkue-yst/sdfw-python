@@ -17,7 +17,6 @@ def sdfw_init():
     """
     messenger = Messenger.get_instance()
     messenger.start()
-    messenger.join()
 
 
 def sdfw_quit():
@@ -26,3 +25,17 @@ def sdfw_quit():
     """
     messenger = Messenger.get_instance()
     messenger.exec_quit()
+
+
+def open_window(width, height):
+    """
+    新規ウィンドウを開く
+
+    Parameters
+    ----------
+    width : int
+        ウィンドウの横幅
+    height : int
+        ウィンドウの高さ
+    """
+    Messenger.get_instance().exec_open_window(width, height)
