@@ -91,6 +91,23 @@ class Messenger(threading.Thread):
         # 終端文字を付けたコマンド実行メッセージを送信
         self._command_sock.send((message + '\0').encode())
 
+    def exec_quit(self):
+        """
+        終了処理を実行する
+        """
+        # 終了用メッセージを作成・送信
+        message = 'quit'
+        self._send_message(message)
+        self._is_loop = False
+
+    def exec_update(self):
+        """
+        描画内容の更新処理を実行する
+        """
+        # フレーム更新用メッセージを作成・送信
+        message = 'update'
+        self._send_message(message)
+
     def exec_open_window(self, width, height):
         """
         新規ウィンドウを開く
@@ -106,11 +123,15 @@ class Messenger(threading.Thread):
         message = 'openWindow/' + str(width) + '/' + str(height)
         self._send_message(message)
 
-    def exec_quit(self):
+    def exec_close_window(self, win):
         """
-        終了処理を実行する
+        ウィンドウを閉じる
+
+        Parameters
+        ----------
+        win : int
+            削除するウィンドウID
         """
-        # 終了用メッセージを作成・送信
-        message = 'quit'
+        # ウィンドウ削除用メッセージを作成・送信
+        message = 'closeWindow/' + str(win)
         self._send_message(message)
-        self._is_loop = False

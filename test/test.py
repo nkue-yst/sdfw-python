@@ -18,7 +18,10 @@ def main():
     """
     sdfw.sdfw_init()
     sdfw.open_window(1280, 720)
-    time.sleep(2)
+
+    while sdfw.update():
+        time.sleep(1)
+
     sdfw.sdfw_quit()
 
 
