@@ -16,10 +16,10 @@ def main():
     """
     sdfwを利用したテストプログラムのメイン処理関数
     """
-    sdfw.sdfw.sdfw_init()
-    sdfw.sdfw.open_window(1280, 720)
+    sdfw.sdfw_init()
+    sdfw.open_window(1280, 720)
     time.sleep(2)
-    sdfw.sdfw.sdfw_quit()
+    sdfw.sdfw_quit()
 
 
 if __name__ == '__main__':
