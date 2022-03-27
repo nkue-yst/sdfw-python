@@ -1,0 +1,94 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simple Drawing FrameWork User Guide
+% wrtten by Nakaue Yoshito
+% 2022/03/06
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper, 11pt, oneside, onecolumn, openany]{jsarticle}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{here}
+\usepackage{tabto}
+\usepackage{listings}
+\usepackage{jlisting}
+
+\begin{document}
+\NumTabs{20}
+
+\newcommand{\function}[3]{
+  \noindent
+  \tab \texttt{#1} \\
+  \tab \underline{引数} \tab #2 \\
+  \tab \underline{返り値} \tab #3 \\\par
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Setting for source code
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\vspace{-3cm}Simple Drawing FrameWork}
+\author{Y.Nakaue}
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% プログラムの開始と終了
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{プログラムの開始と終了}
+\subsection{ライブラリ機能の初期化}
+\function{void sdfw\_init()}{無し}{無し}
+
+\subsection{ライブラリ機能の終了処理}
+\function{void sdfw\_quit()}{無し}{無し}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% メインループ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{メインループ}
+\subsection{描画内容の更新}
+\function{bool update}{無し}{メインループの更新可否}
+描画内容を最新の状態に更新する．常にtrueを返す．\\
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 描画のための設定
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{描画のための設定}
+\subsection{ウィンドウの作成}
+\function{int open\_window(width, height)}{width: 横幅，height: 高さ}{作成したウィンドウID}
+描画を行うためのウィンドウを作成し，画面前面に表示する．引数には作成するウィンドウの横幅と高さを指定する．1つのプログラムの中で複数のウィンドウを作成することが可能で，返り値として作成したウィンドウに割り当てられたウィンドウIDを返す．ウィンドウIDは，作成した順に0からの連番で整数値が返される．
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 主な描画関数
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{主な描画関数}
+
+\subsection{文字列}
+\function{void print\_text(text, win=0)}{text: 文字列データ，win: 描画先ウィンドウID}{無し}
+引数に指定した文字列を描画する．第2引数に描画を行うウィンドウIDを指定でき，デフォルトではメインウィンドウへの描画を行う．1フレーム内で複数回この関数を呼び出すと自動的に改行され，2回目以降の呼び出し時には次の行に出力される．
+
+
+\end{document}

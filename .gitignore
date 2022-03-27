@@ -2,3 +2,12 @@
 dist/
 *.egg-info/
 sdfw/__pycache__/
+
+.vscode/
+
+*.aux
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
