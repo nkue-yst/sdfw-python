@@ -9,7 +9,6 @@ __author__ = 'Nakaue Yoshito'
 __date__ = '2022/03/24'
 
 import sdfw
-import time
 
 
 def main():
@@ -20,7 +19,7 @@ def main():
     sdfw.open_window(1280, 720)
 
     while sdfw.update():
-        sdfw.print_text('Test')
+        sdfw.print_text(str(sdfw.cursor_pos().x) + ', ' + str(sdfw.cursor_pos().y))
 
     sdfw.sdfw_quit()
 

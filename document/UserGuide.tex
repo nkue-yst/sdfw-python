@@ -91,4 +91,35 @@
 引数に指定した文字列を描画する．第2引数に描画を行うウィンドウIDを指定でき，デフォルトではメインウィンドウへの描画を行う．1フレーム内で複数回この関数を呼び出すと自動的に改行され，2回目以降の呼び出し時には次の行に出力される．
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% イベントに関する機能
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{イベントに関する機能}
+以下の機能はupdate()が呼び出されたタイミングで状態が更新されているため，少し古い情報が得られる場合がある．
+\subsection{マウス入力}
+\subsubsection{マウスカーソル座標の取得}
+\function{Point cursor\_pos()}{無し}{現在のマウスカーソル座標}
+現在のマウスカーソルの座標値をPoint型で取得できる．また，x座標・y座標はそれぞれPointクラスのメンバ変数x・yから取得できる．
+\begin{lstlisting}[caption=使用例, label=macro-GetMouseButtonState, keepspaces=true]
+import sdfw
+
+
+def main():
+    """
+    現在のマウスカーソル位置を出力するサンプルプログラム
+    """
+    sdfw.sdfw_init()
+    sdfw.open_window(1280, 720)
+
+    while sdfw.update():
+        sdfw.print_text(str(sdfw.cursor_pos().x) + ', ' + str(sdfw.cursor_pos().y))
+
+    sdfw.sdfw_quit()
+
+
+if __name__ == '__main__':
+    main()
+\end{lstlisting}
+
+
 \end{document}

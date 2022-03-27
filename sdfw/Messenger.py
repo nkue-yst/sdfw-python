@@ -10,7 +10,7 @@ __date__ = '2022/03/23'
 
 import socket
 import threading
-import time
+from sdfw.Mouse import Mouse
 
 
 class Messenger(threading.Thread):
@@ -21,6 +21,8 @@ class Messenger(threading.Thread):
     ----------
     _instance : Messenger
         シングルトン用インスタンス
+    _is_loop : bool
+        メインループが続くかどうか
     _ip_address : str
         IPアドレス（ローカルホスト）
     _command_port : int
@@ -77,15 +79,46 @@ class Messenger(threading.Thread):
         str_buff = ''
         self._event_sock.send(sync_message.encode())
 
-        while True:
+        while self._is_loop:
             buff = self._event_sock.recv(1).decode()
 
             if buff == '\0':
-                word_list = 'a'
+                word_list = self._parse_message(str_buff)
+
+                if word_list[0] == 'Mouse':
+                    if word_list[1] == 'Button':
+                        if word_list[2] == 'Down':
+                            Mouse.get_instance().on_button_down(word_list[3], word_list[4], word_list[5])
+                        elif word_list[2] == 'Up':
+                            Mouse.get_instance().on_button_up(word_list[3], word_list[4], word_list[5])
+                    elif word_list[1] == 'X':
+                        Mouse.get_instance().update_position(word_list[2], word_list[4])
+
                 str_buff = ''
+                word_list = []
                 self._event_sock.send(sync_message.encode())
             else:
                 str_buff += buff
+
+    @staticmethod
+    def _parse_message(message, delimiter='/'):
+        """
+        メッセージを区切り文字で区切って返す
+
+        Parameters
+        ----------
+        message : str
+            元のメッセージ
+        delimiter : str
+            区切り文字
+
+        Returns
+        -------
+        word_list : list
+            区切った文字列リスト
+        """
+        word_list = message.split(delimiter)
+        return word_list
 
     def _send_message(self, message):
         """

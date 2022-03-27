@@ -10,6 +10,8 @@ __date__ = '2022/03/23'
 
 import sdfw
 from sdfw.Messenger import Messenger
+from sdfw.Mouse import Mouse
+from sdfw.Point import Point
 
 window_index = 0
 
@@ -88,3 +90,16 @@ def print_text(text, win=0):
         出力先ウィンドウID
     """
     Messenger.get_instance().exec_print_text(text, win)
+
+
+def cursor_pos():
+    """
+    マウスカーソルの現在の座標を取得する
+
+    Returns
+    -------
+    pos : Point
+        現在のマウスカーソル座標
+    """
+    pos = Mouse.get_instance().get_current_position()
+    return pos
