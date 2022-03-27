@@ -73,8 +73,19 @@ class Messenger(threading.Thread):
         """
         スレッドにてイベント情報受信処理を行う
         """
-        while self._is_loop:
-            pass
+        sync_message = '0'
+        str_buff = ''
+        self._event_sock.send(sync_message.encode())
+
+        while True:
+            buff = self._event_sock.recv(1).decode()
+
+            if buff == '\0':
+                word_list = 'a'
+                str_buff = ''
+                self._event_sock.send(sync_message.encode())
+            else:
+                str_buff += buff
 
     def _send_message(self, message):
         """
@@ -134,4 +145,19 @@ class Messenger(threading.Thread):
         """
         # ウィンドウ削除用メッセージを作成・送信
         message = 'closeWindow/' + str(win)
+        self._send_message(message)
+
+    def exec_print_text(self, text, win):
+        """
+        指定文字列を指定ウィンドウに出力する
+
+        Parameters
+        ----------
+        text : str
+            出力する文字列
+        win : int
+            出力先ウィンドウID
+        """
+        # 文字列出力用メッセージを作成・送信
+        message = 'print/' + text + '/' + str(win)
         self._send_message(message)

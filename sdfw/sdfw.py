@@ -39,6 +39,8 @@ def update():
     """
     Messenger.get_instance().exec_update()
 
+    return True
+
 
 def open_window(width, height):
     """
@@ -72,3 +74,17 @@ def close_window(win):
         削除するウィンドウID
     """
     Messenger.get_instance().exec_close_window(win)
+
+
+def print_text(text, win=0):
+    """
+    指定文字列を指定ウィンドウに出力する
+
+    Parameters
+    ----------
+    text : str
+        出力する文字列
+    win : int
+        出力先ウィンドウID
+    """
+    Messenger.get_instance().exec_print_text(text, win)

@@ -20,7 +20,7 @@ def main():
     sdfw.open_window(1280, 720)
 
     while sdfw.update():
-        time.sleep(1)
+        sdfw.print_text('Test')
 
     sdfw.sdfw_quit()
 
