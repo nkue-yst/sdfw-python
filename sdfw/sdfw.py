@@ -12,8 +12,7 @@ import sdfw
 from sdfw.Messenger import Messenger
 from sdfw.Mouse import Mouse
 from sdfw.Point import Point
-
-window_index = 0
+from sdfw.ValueHolder import ValueHolder as Value
 
 
 def sdfw_init():
@@ -62,8 +61,8 @@ def open_window(width, height):
     """
     Messenger.get_instance().exec_open_window(width, height)
 
-    sdfw.window_index += 1
-    return sdfw.window_index
+    Value.get_instance().window_index += 1
+    return Value.get_instance().window_index - 1
 
 
 def close_window(win):
