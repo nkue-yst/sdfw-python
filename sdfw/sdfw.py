@@ -8,7 +8,6 @@
 __author__ = 'Nakaue Yoshito'
 __date__ = '2022/03/23'
 
-import sdfw
 from sdfw.Messenger import Messenger
 from sdfw.Mouse import Mouse
 from sdfw.Point import Point
@@ -40,7 +39,7 @@ def update():
     """
     Messenger.get_instance().exec_update()
 
-    return True
+    return Messenger.get_instance().get_loop_flag()
 
 
 def open_window(width, height):

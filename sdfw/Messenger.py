@@ -93,12 +93,22 @@ class Messenger(threading.Thread):
                             Mouse.get_instance().on_button_up(word_list[3], word_list[4], word_list[5])
                     elif word_list[1] == 'X':
                         Mouse.get_instance().update_position(word_list[2], word_list[4])
+                elif word_list[0] == 'QUIT':
+                    self._is_loop = False
 
                 str_buff = ''
-                word_list = []
                 self._event_sock.send(sync_message.encode())
             else:
                 str_buff += buff
+
+    def get_loop_flag(self):
+        """
+        メインループ続行フラグを取得する
+
+        _is_loop : bool
+            メインループが続くかどうか
+        """
+        return self._is_loop
 
     @staticmethod
     def _parse_message(message, delimiter='/'):
@@ -142,7 +152,6 @@ class Messenger(threading.Thread):
         # 終了用メッセージを作成・送信
         message = 'quit'
         self._send_message(message)
-        self._is_loop = False
 
     def exec_update(self):
         """
